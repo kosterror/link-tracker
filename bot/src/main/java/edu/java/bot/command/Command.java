@@ -4,6 +4,8 @@ import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.MessageEntity;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.User;
+import edu.java.bot.util.i18n.BotLocale;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ public interface Command {
      *
      * @return описание команды.
      */
-    String getDescription();
+    String getDescription(BotLocale botLocale);
 
     /**
      * Возвращает тип команды.
@@ -73,8 +75,30 @@ public interface Command {
      *
      * @return объект {@link BotCommand}.
      */
-    default BotCommand toBotCommand() {
-        return new BotCommand(getCommand(), getDescription());
+    default BotCommand toBotCommand(BotLocale botLocale) {
+        return new BotCommand(getCommand(), getDescription(botLocale));
+    }
+
+    /**
+     * Возвращает локализацию, которую следует использовать для ответа на сообщение.
+     *
+     * @param update событие.
+     * @return локализация.
+     */
+    default BotLocale getLocale(Update update) {
+        Message message = update.message();
+
+        if (message == null) {
+            return BotLocale.DEFAULT;
+        }
+
+        User user = message.from();
+
+        if (user == null) {
+            return BotLocale.DEFAULT;
+        }
+
+        return user.languageCode() == null ? null : BotLocale.fromLanguageCode(user.languageCode());
     }
 
 }

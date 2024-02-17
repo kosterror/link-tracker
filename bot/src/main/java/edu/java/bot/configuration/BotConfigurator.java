@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SetMyCommands;
+import edu.java.bot.util.i18n.BotLocale;
 import edu.java.bot.command.Command;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
@@ -33,10 +34,8 @@ public class BotConfigurator implements AutoCloseable, UpdatesListener {
         bot.setUpdatesListener(this);
         log.info("Setting update listener is finished");
 
-        log.info("Started setting commands...");
-        SetMyCommands setMyCommands = new SetMyCommands(convertCommands(commands));
-        bot.execute(setMyCommands);
-        log.info("Setting commands is finished");
+        setCommands(BotLocale.RU);
+        setCommands(BotLocale.DEFAULT);
     }
 
     /**
@@ -59,6 +58,7 @@ public class BotConfigurator implements AutoCloseable, UpdatesListener {
      */
     @Override public int process(List<Update> updates) {
         for (Update update : updates) {
+            log.info("update: {}", update);
             commands.stream()
                 .filter(command -> command.isSupports(update))
                 .findFirst()
@@ -68,8 +68,15 @@ public class BotConfigurator implements AutoCloseable, UpdatesListener {
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    private BotCommand[] convertCommands(List<Command> commands) {
-        List<BotCommand> botCommandList = commands.stream().map(Command::toBotCommand).toList();
+    private void setCommands(BotLocale botLocale) {
+        log.info("Started setting commands with {} localization...", botLocale.getValue());
+        SetMyCommands setMyCommands = new SetMyCommands(convertCommands(commands, botLocale));
+        bot.execute(setMyCommands);
+        log.info("Setting commands with {} localization is finished", botLocale.getValue());
+    }
+
+    private BotCommand[] convertCommands(List<Command> commands, BotLocale locale) {
+        List<BotCommand> botCommandList = commands.stream().map(command -> command.toBotCommand(locale)).toList();
         return botCommandList.toArray(BotCommand[]::new);
     }
 
