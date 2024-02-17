@@ -58,7 +58,6 @@ public class BotConfigurator implements AutoCloseable, UpdatesListener {
      */
     @Override public int process(List<Update> updates) {
         for (Update update : updates) {
-            log.info("update: {}", update);
             commands.stream()
                 .filter(command -> command.isSupports(update))
                 .findFirst()
