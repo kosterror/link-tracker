@@ -6,6 +6,7 @@ import edu.java.bot.exception.IllegalCommandFormatException;
 import edu.java.bot.exception.IllegalLinkFormatException;
 import edu.java.bot.exception.LinkAlreadyTrackedException;
 import edu.java.bot.service.LinkTrackerService;
+import io.netty.util.internal.StringUtil;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Service;
 
+/**
+ * Реализация {@link LinkTrackerService}.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -35,6 +39,23 @@ public class LinkTrackerServiceImpl implements LinkTrackerService {
         userLinks.add(link);
         links.put(tgUserId, userLinks);
         log.info("Started tracking link {} ", link);
+    }
+
+    @Override
+    public String getTrackedLinks(long tgUserId) {
+        Set<String> linksSet = links.get(tgUserId);
+
+        if (linksSet == null || linksSet.isEmpty()) {
+            return StringUtil.EMPTY_STRING;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        linksSet.forEach(link -> {
+            stringBuilder.append(link);
+            stringBuilder.append("\n");
+        });
+
+        return stringBuilder.toString();
     }
 
     private String extractAndValidateLink(String message) {

@@ -16,6 +16,10 @@ public enum MessageKey {
     COMMANDS_TRACK_ILLEGAL_LINK_FORMAT("commands.track.illegal_link_format"),
     COMMANDS_TRACK_LINK_ALREADY_TRACKED("commands.track.link_already_tracked"),
 
+    COMMANDS_LIST_DESCRIPTION("commands.list.description"),
+    COMMANDS_LIST_ANSWER("commands.list.answer"),
+    COMMANDS_LIST_LIST_IS_EMPTY("commands.list.list_is_empty"),
+
     INTERNAL_ERROR("commands.internal_error"),
     INVALID_COMMAND("commands.invalid_command");
 
