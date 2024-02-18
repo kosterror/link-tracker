@@ -62,7 +62,10 @@ public interface Command {
         }
 
         for (MessageEntity messageEntity : messageEntities) {
-            if (Objects.equals(getType(), messageEntity.type()) && Objects.equals(getCommand(), message.text())) {
+            if (Objects.equals(getType(), messageEntity.type()) &&
+                message.text() != null &&
+                message.text().startsWith(getCommand())
+            ) {
                 return true;
             }
         }
