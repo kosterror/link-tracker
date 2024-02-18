@@ -7,8 +7,8 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
-import edu.java.bot.util.i18n.BotLocale;
 import edu.java.bot.command.Command;
+import edu.java.bot.util.i18n.BotLocale;
 import edu.java.bot.util.i18n.MessageKey;
 import edu.java.bot.util.i18n.MessageResolver;
 import jakarta.annotation.PostConstruct;
@@ -72,10 +72,10 @@ public class BotConfigurator implements AutoCloseable, UpdatesListener {
                 commandOptional.get().handle(update);
             } else {
                 Message message = update.message();
-                if (message != null &&
-                    message.text() != null &&
-                    message.chat() != null &&
-                    message.chat().id() != null) {
+                if (message != null
+                    && message.text() != null
+                    && message.chat() != null
+                    && message.chat().id() != null) {
                     SendMessage sendMessage = new SendMessage(
                         message.chat().id(),
                         messageResolver.resolve(MessageKey.INVALID_COMMAND, BotLocale.fromUpdate(update))

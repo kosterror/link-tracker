@@ -54,9 +54,9 @@ public interface Command {
         }
 
         for (MessageEntity messageEntity : messageEntities) {
-            if (Objects.equals(MessageEntity.Type.bot_command, messageEntity.type()) &&
-                message.text() != null &&
-                message.text().startsWith(getCommand())
+            if (Objects.equals(MessageEntity.Type.bot_command, messageEntity.type())
+                && message.text() != null
+                && message.text().startsWith(getCommand())
             ) {
                 return true;
             }

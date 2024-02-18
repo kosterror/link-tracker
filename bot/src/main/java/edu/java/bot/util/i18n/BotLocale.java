@@ -40,10 +40,10 @@ public enum BotLocale {
      * @return локализация.
      */
     public static BotLocale fromUpdate(Update update) {
-        if (update != null &&
-            update.message() != null &&
-            update.message().from() != null &&
-            update.message().from().languageCode() != null) {
+        if (update != null
+            && update.message() != null
+            && update.message().from() != null
+            && update.message().from().languageCode() != null) {
             return fromLanguageCode(update.message().from().languageCode());
         }
 

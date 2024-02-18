@@ -11,7 +11,7 @@ public class MessageSourceConfig {
     private static final String ENCODING = "UTF-8";
 
     @Bean
-    public ResourceBundleMessageSource messageSource(){
+    public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
         source.setBasename(BASE_NAME);
         source.setDefaultEncoding(ENCODING);

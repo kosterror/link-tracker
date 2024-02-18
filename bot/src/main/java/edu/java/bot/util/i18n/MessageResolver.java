@@ -1,9 +1,9 @@
 package edu.java.bot.util.i18n;
 
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
-import java.util.Locale;
 
 /**
  * Класс, предоставляющий методы для взаимодействия с {@code Resource Bundle}.
