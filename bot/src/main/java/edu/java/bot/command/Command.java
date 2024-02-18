@@ -1,0 +1,78 @@
+package edu.java.bot.command;
+
+import com.pengrad.telegrambot.model.BotCommand;
+import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.MessageEntity;
+import com.pengrad.telegrambot.model.Update;
+import edu.java.bot.util.i18n.BotLocale;
+import java.util.Objects;
+
+/**
+ * Интерфейс команды, чтобы реагировать на сообщение/команды пользователя.
+ */
+public interface Command {
+
+    /**
+     * Возвращает текст команды.
+     *
+     * @return текст команды.
+     */
+    String getCommand();
+
+    /**
+     * Возвращает описание команды.
+     *
+     * @return описание команды.
+     */
+    String getDescription(BotLocale botLocale);
+
+    /**
+     * Обрабатывает переданное событие.
+     *
+     * @param update событие.
+     */
+    void handle(Update update);
+
+    /**
+     * Определяет: может ли данная команда обработать переданное событие.
+     *
+     * @param update событие.
+     * @return может ли обработать текущая команда переданное событие.
+     */
+    default boolean isSupports(Update update) {
+        if (update == null
+            || update.message() == null
+            || update.message().text() == null
+            || update.message().from() == null
+            || update.message().from().id() == null
+            || update.message().chat() == null
+            || update.message().chat().id() == null
+            || update.message().entities() == null) {
+            return false;
+        }
+
+        Message message = update.message();
+        MessageEntity[] messageEntities = message.entities();
+
+        for (MessageEntity messageEntity : messageEntities) {
+            if (Objects.equals(MessageEntity.Type.bot_command, messageEntity.type())
+                && message.text() != null
+                && message.text().startsWith(getCommand())
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Приводит объект {@link Command} в объект {@link BotCommand}.
+     *
+     * @return объект {@link BotCommand}.
+     */
+    default BotCommand toBotCommand(BotLocale botLocale) {
+        return new BotCommand(getCommand(), getDescription(botLocale));
+    }
+
+}
