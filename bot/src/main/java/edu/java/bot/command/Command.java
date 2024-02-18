@@ -5,7 +5,6 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.MessageEntity;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.util.i18n.BotLocale;
-import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -40,18 +39,20 @@ public interface Command {
      * @param update событие.
      * @return может ли обработать текущая команда переданное событие.
      */
-    default boolean isSupports(@NotNull Update update) {
+    default boolean isSupports(Update update) {
+        if (update == null
+            || update.message() == null
+            || update.message().text() == null
+            || update.message().from() == null
+            || update.message().from().id() == null
+            || update.message().chat() == null
+            || update.message().chat().id() == null
+            || update.message().entities() == null) {
+            return false;
+        }
+
         Message message = update.message();
-
-        if (message == null) {
-            return false;
-        }
-
         MessageEntity[] messageEntities = message.entities();
-
-        if (messageEntities == null) {
-            return false;
-        }
 
         for (MessageEntity messageEntity : messageEntities) {
             if (Objects.equals(MessageEntity.Type.bot_command, messageEntity.type())
