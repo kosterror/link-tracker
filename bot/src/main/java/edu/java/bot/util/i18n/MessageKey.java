@@ -20,9 +20,13 @@ public enum MessageKey {
     COMMANDS_LIST_ANSWER("commands.list.answer"),
     COMMANDS_LIST_LIST_IS_EMPTY("commands.list.list_is_empty"),
 
+    COMMANDS_UNTRACK_DESCRIPTION("commands.untrack.description"),
+    COMMANDS_UNTRACK_ANSWER("commands.untrack.answer"),
+    COMMANDS_UNTRACK_LINK_NOT_FOUND("commands.untrack.link_not_found"),
+    COMMANDS_UNTRACK_ILLEGAL_COMMAND_FORMAT("commands.untrack.illegal_command_format"),
+
     INTERNAL_ERROR("commands.internal_error"),
     INVALID_COMMAND("commands.invalid_command");
-
 
     /**
      * Ключ от {@code Resource Bundle}.

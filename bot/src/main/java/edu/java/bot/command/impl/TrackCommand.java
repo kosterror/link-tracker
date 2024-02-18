@@ -3,6 +3,7 @@ package edu.java.bot.command.impl;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.MessageEntity;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.command.Command;
 import edu.java.bot.exception.IllegalCommandFormatException;
@@ -83,7 +84,10 @@ public class TrackCommand implements Command {
     }
 
     private void sendMessage(long chatId, MessageKey key, BotLocale locale) {
-        SendMessage message = new SendMessage(chatId, messageResolver.resolve(key, locale));
+        SendMessage message = new SendMessage(
+            chatId,
+            messageResolver.resolve(key, locale)
+        ).parseMode(ParseMode.Markdown);
         bot.execute(message);
     }
 }
