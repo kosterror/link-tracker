@@ -42,11 +42,6 @@ public class TrackCommand implements Command {
     }
 
     @Override
-    public MessageEntity.Type getType() {
-        return MessageEntity.Type.bot_command;
-    }
-
-    @Override
     public void handle(Update update) {
         long chatId = update.message().chat().id();
         BotLocale locale = BotLocale.fromUpdate(update);

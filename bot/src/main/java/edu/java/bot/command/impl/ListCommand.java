@@ -1,7 +1,6 @@
 package edu.java.bot.command.impl;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.MessageEntity;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.command.Command;
@@ -37,11 +36,6 @@ public class ListCommand implements Command {
     @Override
     public String getDescription(BotLocale botLocale) {
         return messageResolver.resolve(MessageKey.COMMANDS_LIST_DESCRIPTION, botLocale);
-    }
-
-    @Override
-    public MessageEntity.Type getType() {
-        return MessageEntity.Type.bot_command;
     }
 
     @Override

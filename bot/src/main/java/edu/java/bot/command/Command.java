@@ -28,13 +28,6 @@ public interface Command {
     String getDescription(BotLocale botLocale);
 
     /**
-     * Возвращает тип команды.
-     *
-     * @return тип команды.
-     */
-    MessageEntity.Type getType();
-
-    /**
      * Обрабатывает переданное событие.
      *
      * @param update событие.
@@ -61,7 +54,7 @@ public interface Command {
         }
 
         for (MessageEntity messageEntity : messageEntities) {
-            if (Objects.equals(getType(), messageEntity.type()) &&
+            if (Objects.equals(MessageEntity.Type.bot_command, messageEntity.type()) &&
                 message.text() != null &&
                 message.text().startsWith(getCommand())
             ) {
