@@ -3,12 +3,17 @@ package edu.java.bot.configuration;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.BotCommand;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.util.i18n.BotLocale;
 import edu.java.bot.command.Command;
+import edu.java.bot.util.i18n.MessageKey;
+import edu.java.bot.util.i18n.MessageResolver;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +28,7 @@ public class BotConfigurator implements AutoCloseable, UpdatesListener {
 
     private final TelegramBot bot;
     private final List<Command> commands;
+    private final MessageResolver messageResolver;
 
     /**
      * Устанавливает {@link UpdatesListener} и {@link BotCommand} для бота. После этого происходит прослушивание
@@ -58,10 +64,25 @@ public class BotConfigurator implements AutoCloseable, UpdatesListener {
      */
     @Override public int process(List<Update> updates) {
         for (Update update : updates) {
-            commands.stream()
+            Optional<Command> commandOptional = commands.stream()
                 .filter(command -> command.isSupports(update))
-                .findFirst()
-                .ifPresent(command -> command.handle(update));
+                .findFirst();
+
+            if (commandOptional.isPresent()) {
+                commandOptional.get().handle(update);
+            } else {
+                Message message = update.message();
+                if (message != null &&
+                    message.text() != null &&
+                    message.chat() != null &&
+                    message.chat().id() != null) {
+                    SendMessage sendMessage = new SendMessage(
+                        message.chat().id(),
+                        messageResolver.resolve(MessageKey.INVALID_COMMAND, BotLocale.fromUpdate(update))
+                    );
+                    bot.execute(sendMessage);
+                }
+            }
         }
 
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

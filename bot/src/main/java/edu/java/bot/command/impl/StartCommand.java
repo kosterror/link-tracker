@@ -45,7 +45,7 @@ public class StartCommand implements Command {
         log.info("Simulation the launch of the bot functionality for this user");
         SendMessage sendMessage = new SendMessage(
             update.message().chat().id(),
-            messageResolver.resolve(MessageKey.COMMANDS_START_ANSWER, getLocale(update))
+            messageResolver.resolve(MessageKey.COMMANDS_START_ANSWER, BotLocale.fromUpdate(update))
         );
 
         telegramBot.execute(sendMessage);
