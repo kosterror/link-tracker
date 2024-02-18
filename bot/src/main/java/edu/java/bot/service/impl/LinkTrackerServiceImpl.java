@@ -9,9 +9,9 @@ import edu.java.bot.exception.LinkNotFoundException;
 import edu.java.bot.service.LinkTrackerService;
 import io.netty.util.internal.StringUtil;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -33,7 +33,7 @@ public class LinkTrackerServiceImpl implements LinkTrackerService {
         Message message = update.message();
         long tgUserId = message.from().id();
         String link = extractAndValidateLink(message.text());
-        Set<String> userLinks = links.getOrDefault(tgUserId, new HashSet<>());
+        Set<String> userLinks = links.getOrDefault(tgUserId, new TreeSet<>());
         if (userLinks.contains(link)) {
             throw new LinkAlreadyTrackedException(String.format("Link %s already tracked", link));
         }
@@ -49,7 +49,7 @@ public class LinkTrackerServiceImpl implements LinkTrackerService {
         String link = extractLink(message.text());
         Set<String> userLinks = links.get(tgUserId);
 
-        if (!userLinks.contains(link)) {
+        if (userLinks == null || !userLinks.contains(link)) {
             throw new LinkNotFoundException(String.format(
                 "Link %s not found on the user with tg id %s",
                 link,
@@ -88,7 +88,7 @@ public class LinkTrackerServiceImpl implements LinkTrackerService {
     }
 
     private String extractLink(String message) {
-        String[] splitMessage = message.trim().split(" ");
+        String[] splitMessage = message.trim().split("\\s+");
 
         if (splitMessage.length != 2) {
             throw new IllegalCommandFormatException("The command format is incorrect");
