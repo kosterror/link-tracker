@@ -25,6 +25,9 @@ public enum MessageKey {
     COMMANDS_UNTRACK_LINK_NOT_FOUND("commands.untrack.link_not_found"),
     COMMANDS_UNTRACK_ILLEGAL_COMMAND_FORMAT("commands.untrack.illegal_command_format"),
 
+    COMMANDS_HELP_ANSWER("commands.help.answer"),
+    COMMANDS_HELP_DESCRIPTION("commands.help.description"),
+
     INTERNAL_ERROR("commands.internal_error"),
     INVALID_COMMAND("commands.invalid_command");
 
