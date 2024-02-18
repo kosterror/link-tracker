@@ -8,7 +8,17 @@ import lombok.Getter;
 @Getter
 public enum MessageKey {
     COMMANDS_START_DESCRIPTION("commands.start.description"),
-    COMMANDS_START_ANSWER("commands.start.answer");
+    COMMANDS_START_ANSWER("commands.start.answer"),
+
+    COMMANDS_TRACK_ANSWER("commands.track.answer"),
+    COMMANDS_TRACK_DESCRIPTION("commands.track.description"),
+    COMMANDS_TRACK_ILLEGAL_COMMAND_FORMAT("commands.track.illegal_command_format"),
+    COMMANDS_TRACK_ILLEGAL_LINK_FORMAT("commands.track.illegal_link_format"),
+    COMMANDS_TRACK_LINK_ALREADY_TRACKED("commands.track.link_already_tracked"),
+
+    INTERNAL_ERROR("commands.internal_error"),
+    INVALID_COMMAND("commands.invalid_command");
+
 
     /**
      * Ключ от {@code Resource Bundle}.
